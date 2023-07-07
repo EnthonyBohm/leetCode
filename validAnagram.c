@@ -6,14 +6,14 @@
 bool isAnagram(char* s, char* t);
 
 int main(){
-    // char *s = "anagram";
-    // char *t = "nagaram";
+    char *s = "anagram";
+    char *t = "nagaram";
     bool answer;
 
     // char t = "car";
     // char s = "rat";
-    char *t = "ab";
-    char *s = "a";
+    // char *t = "ab";
+    // char *s = "a";
 
     answer = isAnagram(s, t);
     printf("%d", answer);
@@ -22,10 +22,11 @@ int main(){
 bool isAnagram(char* s, char* t){
     int sLetterCount[26] = {0}, tLetterCount[26] = {0};
 
-    for(;*s != '\0'; s++){
+    for(;*s != '\0' || *t != '\0'; s++){
+        if(*t == '\0' || *s == '\0')
+            return false;
+        
         sLetterCount[*s - 'a']++;
-    }
-    for(;*t != '\0'; t++){
         tLetterCount[*t - 'a']++;
     }
     

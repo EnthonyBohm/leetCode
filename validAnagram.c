@@ -18,19 +18,20 @@ int main(){
 }
 
 bool isAnagram(char* s, char* t){
-    char* startAdress = t;
+    int slen = strlen(s), tlen = strlen(t);
+    char aux[slen];
     bool found;
 
-
-    if (sizeof(s) != sizeof(t))
+    if (slen != tlen)
         return false;
 
+    strcpy(aux, t);
     for(; *s != '\0'; s++){
         found = false;
-        for(t = startAdress; *t != '\0'; t++){
-            if(*s == *t){
+        for(int i = 0; i < tlen; i++){
+            if(*s == aux[i]){
                 found = true;
-                *t = '_';
+                aux[i] = '_';
                 break;
             }
         }

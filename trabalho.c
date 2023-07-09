@@ -1,41 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/*
-1. Separar as letras úteis das inúteis
-2. Encontrar uma maneira de fazer com que tenha a mesma quantia ou mais letras na completionWord do que na validLetters
-    2.1 Criar uma variável auxiliar que vai receber as letras validas e preenche com _ se achar a letra
-    2.2 Checar em uma função se todas as 
-3. 
-*/
+#include <stdbool.h>
 
 char * shortestCompletingWord(char * licensePlate, char ** words, int wordsSize);
 
 int main(){
-    char **words = {"step", "steps", "stipe", "steeple"};
-    char *answer = shortestCompletingWord("1s3 PSt", words, 4);
+    char *words[] = {
+        "nice","idea","hard","statement","money","later","interesting","which","purpose","evening"
+    };
+    char *answer = shortestCompletingWord("IaDe806", words, 10);
 
-    printf("%c", answer);
+    puts(answer);
 }
 
+/* 
+======================================================================
+ShortestCompletingWord
 
-char * shortestCompletingWord(char * licensePlate, char ** words, int wordsSize){
-    char validLetters[strlen(licensePlate)], *aux;
-    int i, j, totLetters = 0;
+    Dado um conjunto de palavras acha a menor e primeira palavra,
+    que contem todos os valores de uma string "LicensePlate"
+=====================================================================
+*/
+
+char * ShortestCompletingWord( char * licensePlate, char ** words, int wordsSize ) {
+    char validLetters[strlen ( licensePlate ) ], word[16];
+    int  i, j, k, totLetters = 0, indexAceptedWord = 0, lenghtAceptedWord = 20;
+    bool invalidWord;
     
 
-    for(i = 0; licensePlate[i] != '\0'; i++){
-        if(licensePlate[i] - 'a' >= 0 && licensePlate[i - 'a' < 26])
-            validLetters[totLetters++] = licensePlate[i];
-        else if('a' - licensePlate[i] >= 7 && 'a' - licensePlate[i]<=32)
-            validLetters[totLetters++] = licensePlate[i] +32;
+    for ( i = 0; licensePlate[i] != '\0'; i++ ) {
+        if ( ( ( licensePlate[i] - 'a' ) >= 0) && ( ( licensePlate[i] - 'a' ) < 26 ) )
+            validLetters[totLetters++] = licensePlate[i] ;
+        else if ( ( ( 'a' - licensePlate[i] ) >= 7 ) && ( ( 'a' - licensePlate[i] ) <= 32 ) )
+            validLetters[totLetters++] = licensePlate[i] +32 ;
     }
+    validLetters[totLetters] = '\0';
 
-    aux = (char *) malloc(totLetters * (sizeof(char)));
-    while(words){
+    for ( k = 0; k < wordsSize; k++ ) {
+
+        invalidWord = false;
+        strcpy ( word, words[k] ) ;
         
+        for ( i = 0;validLetters[i] != '\0'; i++ ){
+
+            for ( j=0; ; j++ ) {
+
+                if ( word[j] == '\0' ) {
+                    invalidWord = true;
+                    break;
+                }
+                if ( word[j] == validLetters[i] ) {
+                    word[j] = '_';
+                    break;
+                }
+
+            }
+
+            if ( invalidWord == true ) {
+                break;
+            }
+
+        }
+
+        if ( !invalidWord && ( ( int ) strlen ( words[k] ) ) < lenghtAceptedWord ) {
+            indexAceptedWord = k;
+            lenghtAceptedWord = strlen ( words[k] ) ; 
+        }
+
     }
-    
-    return 0;
+
+    return words[indexAceptedWord];
 }
